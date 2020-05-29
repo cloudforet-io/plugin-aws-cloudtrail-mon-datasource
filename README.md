@@ -1,2 +1,2 @@
-# plugin-monitoring-aws-cloudtrail
+# plugin-aws-cloudtrail
 Plugin for AWS Cloudtrail
