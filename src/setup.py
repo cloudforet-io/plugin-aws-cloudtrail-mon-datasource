@@ -21,7 +21,7 @@ with open('VERSION', 'r') as f:
     f.close()
 
 setup(
-    name='plugin-monitoring-aws-cloudtrail',
+    name='plugin-aws-cloudtrail',
     version=VERSION,
     description='AWS CloudTrail collector',
     long_description='',
