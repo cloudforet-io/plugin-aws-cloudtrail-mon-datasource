@@ -18,11 +18,12 @@ class Log(BaseAPI, log_pb2_grpc.LogServicer):
         with self.locator.get_service('MonitoringService', metadata) as log_svc:
             resource_stream = log_svc.list_resources(params)
             for resource in resource_stream:
-                res = {
-                    'resource_type': (resource['resource_type']),
-                    'actions': resource['actions'],
-                    'result': resource['result']
-
-                }
-                _LOGGER.debug(f'[list] LogResponse: {res}')
-                yield self.locator.get_info('PluginLogsResponse', res)
+                result = resource.get('result')
+                # res = {
+                #     'resource_type': (resource['resource_type']),
+                #     'actions': resource['actions'],
+                #     'result': resource['result']
+                #
+                # }
+                _LOGGER.debug(f'[list] LogsDataInfo: {result}')
+                yield self.locator.get_info('LogsDataInfo', result)
