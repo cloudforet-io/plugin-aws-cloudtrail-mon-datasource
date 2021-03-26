@@ -30,7 +30,6 @@ class ReferenceKeyModel(Model):
 class PluginMetadata(Model):
     supported_resource_type = ListType(StringType, default=_SUPPORTED_RESOURCE_TYPE)
     required_keys = ListType(StringType, default=_REQUIRED_KEYS)
-    reference_keys = ListType(ModelType(ReferenceKeyModel), default=_REFERENCE_KEYS)
 
 
 class PluginInitResponse(Model):
