@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
+from google.protobuf.empty_pb2 import Empty
 
 __all__ = ['EmptyInfo']
 
-from google.protobuf.empty_pb2 import Empty
 
 def EmptyInfo():
-        return Empty()
-
+    return Empty()
