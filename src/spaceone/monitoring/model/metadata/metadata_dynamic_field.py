@@ -1,6 +1,6 @@
 import math
 from schematics import Model
-from schematics.types import ModelType, StringType, PolyModelType, DictType, ListType, BooleanType
+from schematics.types import ModelType, StringType, PolyModelType, DictType, ListType, BooleanType, BaseType
 from .metadata_dynamic_search import BaseDynamicSearch
 
 
@@ -50,6 +50,12 @@ class FieldViewOption(Model):
     field_description = StringType(serialize_when_none=False)
 
 
+class MoreLayoutField(Model):
+    name = StringType(default='')
+    type = StringType(default="popup")
+    options = DictType(BaseType, serialize_when_none=False)
+
+
 class BaseDynamicField(BaseField):
     name = StringType(serialize_when_none=False)
     key = StringType(serialize_when_none=False)
@@ -95,6 +101,11 @@ class ProgressFieldOptions(FieldViewOption):
 class SizeFieldOptions(FieldViewOption):
     display_unit = StringType(serialize_when_none=False, choices=('BYTES', 'KB', 'MB', 'GB', 'TB', 'PB'))
     source_unit = StringType(serialize_when_none=False, choices=('BYTES', 'KB', 'MB', 'GB', 'TB', 'PB'))
+
+
+class MoreFieldOptions(FieldViewOption):
+    sub_key = StringType(serialize_when_none=False)
+    layout = PolyModelType(MoreLayoutField, serialize_when_none=False)
 
 
 class TextDyField(BaseDynamicField):
@@ -402,7 +413,7 @@ class SearchField(BaseDynamicSearch):
 
 class MoreField(BaseDynamicField):
     type = StringType(default="more")
-    options = PolyModelType(SizeFieldOptions, serialize_when_none=False)
+    options = PolyModelType(MoreFieldOptions, serialize_when_none=False)
 
     @classmethod
     def data_source(cls, name, key, **kwargs):

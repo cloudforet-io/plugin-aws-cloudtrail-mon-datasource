@@ -21,6 +21,7 @@ class BaseLayoutField(Model):
     name = StringType(default='')
     type = StringType(default="item",
                       choices=("item", "table", "query-search-table", "simple-table", "list", "raw", "html"))
+
     options = PolyModelType(LayoutOptions, serialize_when_none=False)
 
 
