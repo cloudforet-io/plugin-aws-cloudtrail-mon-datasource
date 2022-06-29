@@ -1,15 +1,8 @@
-# -*- coding: utf-8 -*-
-
-__all__ = ['MonitoringManager']
-
 import logging
-
-from datetime import datetime
-
-from spaceone.core import config
-from spaceone.core.error import *
 from spaceone.core.manager import BaseManager
-import boto3
+from spaceone.monitoring.conf.monitoring_conf import *
+from spaceone.monitoring.connector.cloudtrail_connector import CloudTrailConnector
+from spaceone.monitoring.model.log_model import Log, Event
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -17,12 +10,12 @@ class MonitoringManager(BaseManager):
     def __init__(self, transaction):
         super().__init__(transaction)
 
-    def list_resources(self, options, secret_data, filters, resource, start, end, sort, limit):
-        # call ec2 connector
+    def list_logs(self, params):
+        cloudtrail_connector: CloudTrailConnector = self.locator.get_connector('CloudTrailConnector', **params)
 
-        connector = self.locator.get_connector('CloudTrailConnector')
+        region_name = params['query'].get('region_name', DEFAULT_REGION)
+        cloudtrail_connector.set_client(region_name)
 
-        # make query, based on options, secret_data, filter
-        query = filters
+        for events in cloudtrail_connector.lookup_events(params):
+            yield Log({'logs': [Event(event, strict=False) for event in events]})
 
-        return connector.collect_info(query, secret_data, start, end, resource, sort, limit)

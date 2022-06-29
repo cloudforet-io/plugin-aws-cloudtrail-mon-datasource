@@ -1,6 +1,5 @@
 import os
 import unittest
-
 from spaceone.core.unittest.runner import RichTestRunner
 from spaceone.tester import TestCase, print_json
 
@@ -24,30 +23,41 @@ export AWS_SECRET_ACCESS_KEY=<YOUR_AWS_SECRET_ACCESS_KEY>
 
 class TestLog(TestCase):
 
-    def test_valify(self):
-        options = {}
+    def test_init(self):
+        v_info = self.monitoring.DataSource.init({'options': {}})
+        print_json(v_info)
+
+    def test_verify(self):
+        schema = 'aws_access_key'
+        options = {
+        }
         secret_data = {
             'aws_access_key_id': AKI,
             'aws_secret_access_key': SAK
         }
-        resource_stream = self.monitoring.DataSource.verify({'options':options,
-                                                             'secret_data':secret_data})
-        for res in resource_stream:
-            print_json(res)
- 
-    def test_list(self):
-        options = {}
+        self.monitoring.DataSource.verify({'schema': schema, 'options': options, 'secret_data': secret_data})
+
+    def test_log_list(self):
         secret_data = {
             'aws_access_key_id': AKI,
             'aws_secret_access_key': SAK
         }
-        filter = {}
-        resource = 'arn:aws:ec2:ap-northeast-2:072548720675:instance/i-08c5592e084b24e20'
-        resource_stream = self.monitoring.Log.list({'options':options,
-                                                    'secret_data':secret_data,
-                                                    'filter':filter,
-                                                    'resource': resource})
-        print(resource_stream)
+
+        params = {
+            'options': {},
+            'secret_data': secret_data,
+            'schema': 'aws_access_key',
+            'query': {
+                'region_name': 'ap-northeast-2',
+                'LookupAttributes': [
+                    {'AttributeKey': 'ResourceName', 'AttributeValue': 'i-03073d34be471a2cb'}
+                ]
+            },
+            'start': '2022-03-20 21:40:43.789618',
+            'end': '2022-06-28 21:40:21.661581'
+        }
+
+        resource_stream = self.monitoring.Log.list(params)
 
         for res in resource_stream:
             print_json(res)
