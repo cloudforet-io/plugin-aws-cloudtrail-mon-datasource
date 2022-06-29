@@ -1,2 +1,5 @@
 from spaceone.monitoring.manager.data_source_manager import DataSourceManager
 from spaceone.monitoring.manager.monitoring_manager import MonitoringManager
+from spaceone.monitoring.manager.metadata_manager import MetadataManager
+
+
