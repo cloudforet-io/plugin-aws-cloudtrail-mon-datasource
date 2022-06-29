@@ -54,21 +54,21 @@ jobs:
           echo "new_patch=$(echo ${{ env.TAG }} | cut -c 2- | cut -d'.' -f3)" >> $GITHUB_ENV
       - name: compare versions
         run: |
-          if [ ${{ env.TAG }} == ${{ env.old_version }} ];
+          if [ ${{ env.TAG }} -eq ${{ env.old_version }} ];
           then
             echo "New version cannot be the same as old version."
             exit 1
-          elif [ ${{ env.old_major }} \> ${{ env.new_major }} ];
+          elif [ ${{ env.old_major }} -gt ${{ env.new_major }} ];
           then
             echo "Old major version cannot be greater than new major version"
             exit 1
-          elif [ ${{ env.old_minor }} \> ${{ env.new_minor }} ];
+          elif [ ${{ env.old_minor }} -gt ${{ env.new_minor }} ];
           then
             echo "Old minor version cannot be greater than new minor version"
             exit 1
-          elif [ ${{ env.old_minor }} == ${{ env.new_minor }} ];
+          elif [ ${{ env.old_minor }} -eq ${{ env.new_minor }} ];
           then
-            if [ ${{ env.old_patch }} \> ${{ env.new_patch }} ];
+            if [ ${{ env.old_patch }} -ge ${{ env.new_patch }} ];
             then
               echo "Old patch version cannot be greater than new patch version in same minor version"
               exit 1
