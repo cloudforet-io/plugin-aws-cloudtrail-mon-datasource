@@ -8,11 +8,11 @@ ENV SRC_DIR /tmp/src
 
 COPY pkg/*.txt ${PKG_DIR}/
 RUN pip install --upgrade pip && \
-    pip install --upgrade -r ${PKG_DIR}/pip_requirements.txt && \
+    pip install --upgrade --use-deprecated=legacy-resolver -r ${PKG_DIR}/pip_requirements.txt && \
     pip install --upgrade --pre spaceone-core spaceone-api
 
 COPY src ${SRC_DIR}
-ARG CACHEBUST=1
+
 WORKDIR ${SRC_DIR}
 RUN python3 setup.py install && \
     rm -rf /tmp/*
