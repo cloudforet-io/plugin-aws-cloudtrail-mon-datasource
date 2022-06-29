@@ -1,6 +1,6 @@
 # plugin-aws-cloudtrail-mon-datasource
 
-![AWS Cloud Services](https://spaceone-custom-assets.s3.ap-northeast-2.amazonaws.com/console-assets/icons/aws-cloudservice.svg)
+![AWS Cloud Services](https://spaceone-custom-assets.s3.ap-northeast-2.amazonaws.com/console-assets/icons/aws-cloudtrail.svg)
 **Plugin to collect AWS Cloudtrail log data**
 
 > SpaceONE's [plugin-aws-cloudtrail-mon-datasource](https://github.com/spaceone-dev/plugin-aws-cloudtrail-mon-datasource) is a convenient tool to get Cloudtrail log data from AWS.
