@@ -21,6 +21,7 @@ class MonitoringService(BaseService):
                 'schema': 'str',
                 'secret_data': 'dict',
                 'query': 'dict',
+                'keyword': 'str',
                 'start': 'timestamp',
                 'end': 'timestamp',
                 'sort': 'dict',

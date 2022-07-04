@@ -14,8 +14,34 @@ class MonitoringManager(BaseManager):
         cloudtrail_connector: CloudTrailConnector = self.locator.get_connector('CloudTrailConnector', **params)
 
         region_name = params['query'].get('region_name', DEFAULT_REGION)
+        resource_type = params['query'].get('resource_type')
+        keyword = params.get('keyword')
         cloudtrail_connector.set_client(region_name)
 
         for events in cloudtrail_connector.lookup_events(params):
-            yield Log({'logs': [Event(event, strict=False) for event in events]})
+            event_vos = self.set_events(events, keyword, resource_type)
+            yield Log({'logs': event_vos})
 
+    def set_events(self, events, keyword, resource_type):
+        event_vos = []
+        for event in events:
+            if keyword:
+                if keyword.lower() not in event.get('EventName', '').lower():
+                    continue
+
+            if resource_type:
+                event_vos.extend(self.filter_resource_type(event, resource_type))
+            else:
+                event_vos.append(Event(event, strict=False))
+
+        return event_vos
+
+    @staticmethod
+    def filter_resource_type(event, resource_type):
+        event_vos = []
+        for resource in event.get('Resources', []):
+            if resource.get('ResourceType') == resource_type:
+                event_vos.append(Event(event, strict=False))
+                break
+
+        return event_vos
