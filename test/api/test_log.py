@@ -47,14 +47,16 @@ class TestLog(TestCase):
             'options': {},
             'secret_data': secret_data,
             'schema': 'aws_access_key',
+            'keyword': 'Create',
             'query': {
                 'region_name': 'ap-northeast-2',
                 'LookupAttributes': [
-                    {'AttributeKey': 'ResourceName', 'AttributeValue': 'i-03073d34be471a2cb'}
-                ]
+                    {'AttributeKey': 'ResourceName', 'AttributeValue': 'test'}
+                ],
+                'resource_type': 'AWS::RDS::DBSubnetGroup'
             },
             'start': '2022-03-20 21:40:43.789618',
-            'end': '2022-06-28 21:40:21.661581'
+            'end': '2022-07-02 21:40:21.661581'
         }
 
         resource_stream = self.monitoring.Log.list(params)
