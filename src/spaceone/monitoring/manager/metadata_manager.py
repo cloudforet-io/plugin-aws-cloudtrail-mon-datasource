@@ -29,13 +29,9 @@ class MetadataManager(BaseManager):
                         }
                     }
                 }),
-                DateTimeDyField.data_source('Event Time', 'event_time'),
                 TextDyField.data_source('User Name', 'username'),
-                TextDyField.data_source('Event Source', 'event_source'),
-                ListDyField.data_source('Resource Type', 'resources', options={
-                    'sub_key': 'resource_type',
-                    'delimiter': ', '
-                }),
+                DateTimeDyField.data_source('Event Time', 'event_time'),
+                TextDyField.data_source('Access Key ID', 'access_key_id'),
             ]
         )
         return metadata
