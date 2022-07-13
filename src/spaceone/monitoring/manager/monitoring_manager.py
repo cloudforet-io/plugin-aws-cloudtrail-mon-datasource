@@ -6,6 +6,7 @@ from spaceone.monitoring.model.log_model import Log, Event
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class MonitoringManager(BaseManager):
     def __init__(self, transaction):
         super().__init__(transaction)
@@ -20,7 +21,7 @@ class MonitoringManager(BaseManager):
 
         for events in cloudtrail_connector.lookup_events(params):
             event_vos = self.set_events(events, keyword, resource_type)
-            yield Log({'logs': event_vos})
+            yield Log({'results': event_vos})
 
     def set_events(self, events, keyword, resource_type):
         event_vos = []

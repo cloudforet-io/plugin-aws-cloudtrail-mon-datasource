@@ -20,4 +20,4 @@ class Event(Model):
 
 
 class Log(Model):
-    logs = ListType(ModelType(Event), default=[])
+    results = ListType(ModelType(Event), default=[])
