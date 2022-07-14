@@ -18,7 +18,6 @@ class MetadataManager(BaseManager):
             name='cloudtrail-table',
             fields=[
                 MoreField.data_source('Event Name', 'event_name', options={
-                    'sub_key': 'event_info',
                     'layout': {
                         'name': 'Event Details',
                         'type': 'popup',
