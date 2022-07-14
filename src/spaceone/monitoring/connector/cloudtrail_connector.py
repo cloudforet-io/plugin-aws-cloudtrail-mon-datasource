@@ -1,4 +1,5 @@
 import logging
+from spaceone.core.utils import load_json
 from spaceone.monitoring.libs.connector import AWSConnector
 
 _LOGGER = logging.getLogger(__name__)
@@ -31,4 +32,10 @@ class CloudTrailConnector(AWSConnector):
 
         for response in response_iterator:
             events = response.get('Events', [])
+
+            for event in events:
+                if 'CloudTrailEvent' in event:
+                    cloud_trail_event = load_json(event['CloudTrailEvent'])
+                    event['CloudTrailEvent'] = cloud_trail_event
+
             yield events

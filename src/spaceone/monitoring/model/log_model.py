@@ -1,5 +1,5 @@
 from schematics import Model
-from schematics.types import ModelType, StringType, DateTimeType, ListType
+from schematics.types import ModelType, StringType, DateTimeType, ListType, DictType, BaseType
 
 
 class Resource(Model):
@@ -16,7 +16,8 @@ class Event(Model):
     event_source = StringType(deserialize_from='EventSource', serialize_when_none=False)
     username = StringType(deserialize_from='Username', serialize_when_none=False)
     resources = ListType(ModelType(Resource), deserialize_from='Resources', default=[])
-    cloud_trail_event = StringType(deserialize_from='CloudTrailEvent', serialize_when_none=False)
+    # cloud_trail_event = StringType(deserialize_from='CloudTrailEvent', serialize_when_none=False)
+    cloud_trail_event = DictType(BaseType, deserialize_from='CloudTrailEvent', serialize_when_none=False)
 
 
 class Log(Model):
