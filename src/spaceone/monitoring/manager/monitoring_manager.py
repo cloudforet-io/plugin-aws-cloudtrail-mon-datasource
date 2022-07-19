@@ -31,7 +31,8 @@ class MonitoringManager(BaseManager):
                     continue
 
             if resource_type:
-                event_vos.extend(self.filter_resource_type(event, resource_type))
+                if filtered_event := self.filter_resource_type(event, resource_type):
+                    event_vos.append(filtered_event)
             else:
                 event_vos.append(Event(event, strict=False))
 
@@ -39,10 +40,11 @@ class MonitoringManager(BaseManager):
 
     @staticmethod
     def filter_resource_type(event, resource_type):
-        event_vos = []
-        for resource in event.get('Resources', []):
-            if resource.get('ResourceType') == resource_type:
-                event_vos.append(Event(event, strict=False))
-                break
+        if event['EventName'] in EXCLUDE_EVENT_NAME:
+            return Event(event, strict=False)
+        else:
+            for resource in event.get('Resources', []):
+                if resource.get('ResourceType') == resource_type:
+                    return Event(event, strict=False)
 
-        return event_vos
+        return None
