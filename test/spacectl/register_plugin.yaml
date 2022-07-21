@@ -1,0 +1,19 @@
+---
+name: aws-cloud-trail
+provider: aws
+service_type: monitoring.DataSource
+image: spaceone/plugin-aws-cloudtrail-mon-datasource
+labels:
+  - Monitoring
+  - AWS
+  - CloudTrail
+capability:
+  monitoring_type: LOG
+  supported_schema:
+  - aws_access_key
+  - aws_assume_role
+  use_resource_secret: true
+tags:
+  description: AWS CloudTrail Monitoring Log Plugin
+  icon: https://spaceone-custom-assets.s3.ap-northeast-2.amazonaws.com/console-assets/icons/aws-cloudtrail.svg
+  spaceone:plugin_name: aws-cloud-trail
