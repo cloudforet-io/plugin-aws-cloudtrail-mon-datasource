@@ -40,5 +40,6 @@ EXCLUDE_EVENT_NAME = [
     'UntagResources',
     'UpdateCertificateTag',
     'UpdateTagOption',
-    'UpdateTagsForDomain'
+    'UpdateTagsForDomain',
+    'ConsoleLogin'
 ]
