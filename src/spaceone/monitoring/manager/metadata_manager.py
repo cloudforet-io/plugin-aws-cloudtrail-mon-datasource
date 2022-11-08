@@ -31,7 +31,8 @@ class MetadataManager(BaseManager):
                 TextDyField.data_source('User Name', 'username'),
                 DateTimeDyField.data_source('Event Time', 'event_time'),
                 TextDyField.data_source('Access Key ID', 'access_key_id'),
-                TextDyField.data_source('Error Code', 'cloud_trail_event.errorCode')
+                TextDyField.data_source('Region', 'cloud_trail_event.awsRegion'),
+                TextDyField.data_source('Error Message', 'cloud_trail_event.errorMessage')
             ]
         )
         return metadata
