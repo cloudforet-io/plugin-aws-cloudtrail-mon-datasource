@@ -1,1 +1,2 @@
 from spaceone.monitoring.connector.cloudtrail_connector import CloudTrailConnector
+from spaceone.monitoring.connector.ec2_connector import EC2Connector
