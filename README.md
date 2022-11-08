@@ -49,8 +49,6 @@ authentication privilege for followings:
 
 
 ---
+## [Release note](RELEASE.md)
 
-# Release Note
 
-## Version 1.1.0
-  * Overall structural improvement
