@@ -41,5 +41,6 @@ EXCLUDE_EVENT_NAME = [
     'UpdateCertificateTag',
     'UpdateTagOption',
     'UpdateTagsForDomain',
-    'ConsoleLogin'
+    'ConsoleLogin',
+    'CheckMfa'
 ]

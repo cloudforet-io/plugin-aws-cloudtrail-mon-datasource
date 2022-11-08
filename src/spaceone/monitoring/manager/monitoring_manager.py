@@ -46,7 +46,7 @@ class MonitoringManager(BaseManager):
             console_login_target_user_name = ''
             iam_user_params = copy.deepcopy(params)
             iam_user_params['query']['LookupAttributes'] = \
-                [{'AttributeKey': 'EventName', 'AttributeValue': 'ConsoleLogin'}]
+                [{'AttributeKey': 'EventSource', 'AttributeValue': 'signin.amazonaws.com'}]
 
             _lookup_attr = params.get('query', {}).get('LookupAttributes', [])
             if _lookup_attr:
