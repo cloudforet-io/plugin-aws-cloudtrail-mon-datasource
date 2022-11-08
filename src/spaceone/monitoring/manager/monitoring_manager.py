@@ -59,7 +59,7 @@ class MonitoringManager(BaseManager):
                         if _user_event.get('Username') == console_login_target_user_name:
                             events.append(_user_event)
 
-            events = sorted(events, key=lambda event: event.get('EventTime'))
+            events = sorted(events, key=lambda event: event.get('EventTime'), reverse=True)
 
         return [events]
 
