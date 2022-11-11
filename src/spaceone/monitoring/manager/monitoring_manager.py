@@ -36,16 +36,22 @@ class MonitoringManager(BaseManager):
         cloudtrail_connector: CloudTrailConnector = self.locator.get_connector('CloudTrailConnector', **params)
         cloudtrail_connector.set_client(region_name)
 
-        for _events in cloudtrail_connector.lookup_events(params):
-            events.extend(_events)
-
-        if resource_type == 'AWS::IAM::User':
-            events.extend(self.get_events_iam_user(params))
-
         if resource_type == 'AWS::IAM::AccessKey':
             events.extend(self.get_events_iam_access_key(params))
+        else:
+            for _events in cloudtrail_connector.lookup_events(params):
+                events.extend(_events)
 
-        return [events]
+            if resource_type == 'AWS::IAM::User':
+                events.extend(self.get_events_iam_user(params))
+
+        event_chunk = []
+        for event in events:
+            event_chunk.append(event)
+
+            if len(event_chunk) == MAX_EVENT_CHUNK_NUM:
+                yield event_chunk
+                event_chunk = []
 
     def set_events(self, events, keyword, resource_type):
         event_vos = []
