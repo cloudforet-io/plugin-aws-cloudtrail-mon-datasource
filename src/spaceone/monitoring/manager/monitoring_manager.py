@@ -1,4 +1,3 @@
-import copy
 import logging
 from spaceone.core.manager import BaseManager
 from spaceone.monitoring.conf.monitoring_conf import *
@@ -41,25 +40,10 @@ class MonitoringManager(BaseManager):
             events.extend(_events)
 
         if resource_type == 'AWS::IAM::User':
-            region_names = self.list_regions(params)
+            events.extend(self.get_events_iam_user(params))
 
-            console_login_target_user_name = ''
-            iam_user_params = copy.deepcopy(params)
-            iam_user_params['query']['LookupAttributes'] = \
-                [{'AttributeKey': 'EventSource', 'AttributeValue': 'signin.amazonaws.com'}]
-
-            _lookup_attr = params.get('query', {}).get('LookupAttributes', [])
-            if _lookup_attr:
-                console_login_target_user_name = _lookup_attr[0].get('AttributeValue', '')
-
-            for region_name in region_names:
-                cloudtrail_connector.set_client(region_name)
-                for iam_user_events in cloudtrail_connector.lookup_events(iam_user_params):
-                    for _user_event in iam_user_events:
-                        if _user_event.get('Username') == console_login_target_user_name:
-                            events.append(_user_event)
-
-            events = sorted(events, key=lambda event: event.get('EventTime'), reverse=True)
+        if resource_type == 'AWS::IAM::AccessKey':
+            events.extend(self.get_events_iam_access_key(params))
 
         return [events]
 
@@ -77,6 +61,36 @@ class MonitoringManager(BaseManager):
                 event_vos.append(Event(event, strict=False))
 
         return event_vos
+
+    def get_events_iam_user(self, params):
+        events = []
+
+        cloudtrail_connector: CloudTrailConnector = self.locator.get_connector('CloudTrailConnector', **params)
+        region_names = self.list_regions(params)
+
+        console_login_target_user_name = ''
+
+        for region_name in region_names:
+            cloudtrail_connector.set_client(region_name)
+            for iam_user_events in cloudtrail_connector.lookup_events(params):
+                for _user_event in iam_user_events:
+                    if _user_event.get('Username') == console_login_target_user_name:
+                        events.append(_user_event)
+
+        return sorted(events, key=lambda event: event.get('EventTime'), reverse=True)
+
+    def get_events_iam_access_key(self, params):
+        events = []
+
+        cloudtrail_connector: CloudTrailConnector = self.locator.get_connector('CloudTrailConnector', **params)
+        region_names = self.list_regions(params)
+
+        for region_name in region_names:
+            cloudtrail_connector.set_client(region_name)
+            for access_key_events in cloudtrail_connector.lookup_events(params):
+                events.extend(access_key_events)
+
+        return sorted(events, key=lambda event: event.get('EventTime'), reverse=True)
 
     @staticmethod
     def filter_resource_type(event, resource_type):
