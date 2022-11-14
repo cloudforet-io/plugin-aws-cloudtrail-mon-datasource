@@ -3,10 +3,6 @@ from spaceone.core import utils
 from spaceone.core.connector import BaseConnector
 from spaceone.monitoring.conf.monitoring_conf import *
 
-PAGINATOR_MAX_ITEMS = 10000
-PAGINATOR_PAGE_SIZE = 50
-DEFAULT_REGION = 'us-east-1'
-
 
 class AWSConnector(BaseConnector):
     service = 'cloudtrail'
@@ -61,11 +57,11 @@ class AWSConnector(BaseConnector):
         self.client = self.session.client(self.service)
 
     @staticmethod
-    def generate_query(is_paginate=False, **query):
+    def generate_query(is_paginate=False, limit=PAGINATOR_MAX_ITEMS, **query):
         if is_paginate:
             query.update({
                 'PaginationConfig': {
-                    'MaxItems': PAGINATOR_MAX_ITEMS,
+                    'MaxItems': limit,
                     'PageSize': PAGINATOR_PAGE_SIZE,
                 }
             })
