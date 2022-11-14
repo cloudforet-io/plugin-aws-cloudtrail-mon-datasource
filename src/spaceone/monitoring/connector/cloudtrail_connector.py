@@ -15,7 +15,7 @@ class CloudTrailConnector(AWSConnector):
         query = params['query']
         start = params['start']
         end = params['end']
-        limit = params.get('limit')     # TODO
+        limit = params.get('limit', 1000)   # Force throttling because too many events cause performance issues
 
         lookup_attributes = query.get('LookupAttributes', [])
 
@@ -27,7 +27,7 @@ class CloudTrailConnector(AWSConnector):
             'EndTime': end
         }
 
-        query = self.generate_query(is_paginate=True, **_query)
+        query = self.generate_query(is_paginate=True, limit=limit, **_query)
         response_iterator = paginator.paginate(**query)
 
         for response in response_iterator:
