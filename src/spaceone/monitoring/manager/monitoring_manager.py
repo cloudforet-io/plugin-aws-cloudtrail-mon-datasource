@@ -33,6 +33,7 @@ class MonitoringManager(BaseManager):
 
         region_name = params['query'].get('region_name', DEFAULT_REGION)
         resource_type = params['query'].get('resource_type')
+        limit = params.get('limit', LIMIT)
 
         cloudtrail_connector: CloudTrailConnector = self.locator.get_connector('CloudTrailConnector', **params)
         cloudtrail_connector.set_client(region_name)
@@ -47,12 +48,14 @@ class MonitoringManager(BaseManager):
                 events.extend(self.get_events_iam_user(params))
 
         event_chunk = []
-        for event in events:
+        for event in events[:limit]:
             event_chunk.append(event)
 
             if len(event_chunk) == PAGINATOR_PAGE_SIZE:
                 yield event_chunk
                 event_chunk = []
+
+        yield event_chunk
 
     def set_events(self, events, keyword, resource_type):
         event_vos = []
@@ -61,7 +64,7 @@ class MonitoringManager(BaseManager):
                 if keyword.lower() not in event.get('EventName', '').lower():
                     continue
 
-            if resource_type:
+            if resource_type and resource_type != 'AWS::IAM::AccessKey':
                 if filtered_event := self.filter_resource_type(event, resource_type):
                     event_vos.append(filtered_event)
             else:
@@ -103,7 +106,6 @@ class MonitoringManager(BaseManager):
             cloudtrail_connector.set_client(region_name)
             for access_key_events in cloudtrail_connector.lookup_events(params):
                 events.extend(access_key_events)
-
         return sorted(events, key=lambda event: event.get('EventTime'), reverse=True)
 
     @staticmethod

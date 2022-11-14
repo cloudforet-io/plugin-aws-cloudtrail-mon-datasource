@@ -1,6 +1,8 @@
 import logging
 from spaceone.core.utils import load_json
 from spaceone.monitoring.libs.connector import AWSConnector
+from spaceone.monitoring.conf.monitoring_conf import *
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -15,7 +17,7 @@ class CloudTrailConnector(AWSConnector):
         query = params['query']
         start = params['start']
         end = params['end']
-        limit = params.get('limit', 1000)   # Force throttling because too many events cause performance issues
+        limit = params.get('limit', LIMIT)   # Force throttling because too many events cause performance issues
 
         lookup_attributes = query.get('LookupAttributes', [])
 
