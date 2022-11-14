@@ -1,3 +1,4 @@
+import copy
 import logging
 from spaceone.core.manager import BaseManager
 from spaceone.monitoring.conf.monitoring_conf import *
@@ -49,7 +50,7 @@ class MonitoringManager(BaseManager):
         for event in events:
             event_chunk.append(event)
 
-            if len(event_chunk) == MAX_EVENT_CHUNK_NUM:
+            if len(event_chunk) == PAGINATOR_PAGE_SIZE:
                 yield event_chunk
                 event_chunk = []
 
@@ -75,10 +76,17 @@ class MonitoringManager(BaseManager):
         region_names = self.list_regions(params)
 
         console_login_target_user_name = ''
+        _lookup_attr = params['query'].get('LookupAttributes')
+        if _lookup_attr:
+            console_login_target_user_name = _lookup_attr[0].get('AttributeValue')
+
+        console_login_params = copy.deepcopy(params)
+        console_login_params['query'] = {
+            'LookupAttributes': [{'AttributeKey': 'EventName', 'AttributeValue': 'ConsoleLogin'}]}
 
         for region_name in region_names:
             cloudtrail_connector.set_client(region_name)
-            for iam_user_events in cloudtrail_connector.lookup_events(params):
+            for iam_user_events in cloudtrail_connector.lookup_events(console_login_params):
                 for _user_event in iam_user_events:
                     if _user_event.get('Username') == console_login_target_user_name:
                         events.append(_user_event)
