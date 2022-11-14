@@ -7,7 +7,7 @@
 
 
 Find us also at [Dockerhub](https://hub.docker.com/repository/docker/spaceone/plugin-aws-cloudtrail-mon-datasource)
-> Latest stable version : 1.1.0
+> Latest stable version : 1.1.1
 
 Please contact us if you need any further information. (<support@spaceone.dev>)
 
