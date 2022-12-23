@@ -31,9 +31,7 @@ class AWSConnector(BaseConnector):
                                aws_secret_access_key=self.secret_data['aws_secret_access_key'],
                                region_name=region_name)
 
-        # ASSUME ROLE
-        if self.schema == 'aws_assume_role':
-            role_arn = self.secret_data.get('role_arn')
+        if role_arn := self.secret_data.get('role_arn'):
             sts = self.session.client('sts')
 
             _assume_role_request = {
