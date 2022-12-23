@@ -1,5 +1,8 @@
 # Plugin AWS CloudTrail Monitoring Data Source Release Notes
 
+## v1.1.2
+* [When setting up a new schema, session setting fails](https://github.com/cloudforet-io/plugin-aws-cloudtrail-mon-datasource/issues/15)
+
 ## v1.1.1
 * [Add to get Access key events through the Cloudtrail](https://github.com/cloudforet-io/plugin-aws-cloudtrail-mon-datasource/issues/9)
 
