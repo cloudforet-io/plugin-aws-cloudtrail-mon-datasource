@@ -47,16 +47,30 @@ class TestLog(TestCase):
             'options': {},
             'secret_data': secret_data,
             'schema': 'aws_access_key',
-            'keyword': 'Create',
+            # 'keyword': 'Create',
+            # 'query': {
+            #     'region_name': 'us-east-1',
+            #     'LookupAttributes': [
+            #         {'AttributeKey': 'ResourceName', 'AttributeValue': 'jihyung.song'}
+            #     ],
+            #     'resource_type': 'AWS::IAM::User'
+            # },
             'query': {
                 'region_name': 'ap-northeast-2',
                 'LookupAttributes': [
-                    {'AttributeKey': 'ResourceName', 'AttributeValue': 'test'}
+                    {'AttributeKey': 'ResourceName', 'AttributeValue': 'i-01ee7c46efad30111'}
                 ],
-                'resource_type': 'AWS::RDS::DBSubnetGroup'
+                'resource_type': 'AWS::EC2::Instance'
             },
-            'start': '2022-03-20 21:40:43.789618',
-            'end': '2022-07-02 21:40:21.661581'
+            # 'query': {
+            #     'LookupAttributes': [
+            #         {'AttributeKey': 'AccessKeyId', 'AttributeValue': 'AKIATYAD7BLQE4XLKUFT'}
+            #     ],
+            #     'resource_type': 'AWS::IAM::AccessKey',
+            #     'region_name': 'us-east-1'
+            # },
+            'start': '2022-11-12T11:15:12.717Z',
+            'end': '2022-11-14T11:15:12.717Z'
         }
 
         resource_stream = self.monitoring.Log.list(params)
