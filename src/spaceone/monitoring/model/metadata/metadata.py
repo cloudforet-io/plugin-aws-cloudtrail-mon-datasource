@@ -23,6 +23,7 @@ class MetaDataView(Model):
 class LogMetadata(Model):
     view = ModelType(MetaDataView)
     required_keys = ListType(StringType, default=['data.cloudtrail'])
+    supported_providers = ListType(StringType, default=['aws'])
 
     @classmethod
     def set_fields(cls, name='', fields=[]):
