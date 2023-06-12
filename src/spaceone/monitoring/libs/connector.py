@@ -11,7 +11,7 @@ class AWSConnector(BaseConnector):
     client = None
     schema = None
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         kwargs
             - schema
@@ -19,7 +19,7 @@ class AWSConnector(BaseConnector):
             - secret_data
         """
 
-        super().__init__(transaction=None, config=None)
+        super().__init__(*args, **kwargs)
         self.secret_data = kwargs.get('secret_data')
         self.schema = kwargs.get('schema', DEFAULT_SCHEMA)
 
